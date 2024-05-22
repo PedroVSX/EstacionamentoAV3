@@ -1,5 +1,6 @@
 import java.time.Duration;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Veiculo {
 
@@ -21,7 +22,7 @@ public class Veiculo {
         } else if (verificarPlacaES(this.placa)) {
             this.estado = "Espírito Santo";
         } else {
-            System.out.println("Placa não pertence ao Sudeste!");
+            this.estado = "Estado não é do sudeste!";
         }
     }
 
@@ -72,7 +73,7 @@ public class Veiculo {
         return tipo1 || tipo2 || tipo3 || tipo4 || tipo5 || tipo6 || tipo7 || tipo8 || tipo9;
     }
 
-    public Duration calcularDuracao() {
+    private Duration calcularDuracao() {
         Duration duracao = Duration.between(entrada, saida);
 
         // Se a saída for antes da entrada, ajusta a duração para um dia anterior
@@ -90,11 +91,45 @@ public class Veiculo {
         return String.format("%d horas e %d minutos", horas, minutos);
     }
 
+    public double getDuracao() {
+        Duration duracao = calcularDuracao();
+        double horas = duracao.toHours();
+        double minutos = duracao.toMinutes() % 60;
+        return horas + minutos / 60;
+    }
+
     public String getEstado() {
         return estado;
     }
 
     public String getPlaca() {
         return placa;
+    }
+
+    public String getEntrada() {
+        return entrada.toString();
+    }
+
+    public String getSaida() {
+        return saida.toString();
+    }
+
+    public void setEntrada(String entrada) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        this.entrada = LocalTime.parse(entrada, formatter);
+    }
+
+    public void setSaida(String saida) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        this.saida = LocalTime.parse(saida, formatter);
+    }
+
+    @Override
+    public String toString() {
+        return "Placa: " + this.placa + "\n" +
+                "Estado: " + this.estado + "\n" +
+                "Entrada: " + getEntrada() + "\n" +
+                "Saída: " + getSaida() + "\n" +
+                "Duração: " + getDuracaoFormatada() + "\n";
     }
 }
