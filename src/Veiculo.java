@@ -8,21 +8,22 @@ public class Veiculo {
     private LocalTime saida;
     private String placa;
     private String estado;
+    private int vaga;
 
-    public Veiculo(String placa, LocalTime entrada) {
+    public Veiculo(String placa, String entrada) {
         this.placa = placa;
-        this.entrada = entrada;
+        setEntrada(entrada);
     }
 
     public void verificarPlacaSudeste() {
         if (verificarPlacaSP(this.placa)) {
-            this.estado = "São Paulo";
+            this.estado = "SP";
         } else if (verificarPlacaRJ(this.placa)) {
-            this.estado = "Rio de Janeiro";
+            this.estado = "RJ";
         } else if (verificarPlacaES(this.placa)) {
-            this.estado = "Espírito Santo";
+            this.estado = "ES";
         } else {
-            this.estado = "Estado não é do sudeste!";
+            this.estado = "OE";
         }
     }
 
@@ -98,6 +99,20 @@ public class Veiculo {
         return horas + minutos / 60;
     }
 
+    private double valorPago() {
+        // Tolerância de 15 min
+        // Primeiras três horas: R$ 20,00
+        // Hora subsequentes: R$ 15,00
+
+        if (getDuracao() < 0.25) {
+            return 0;
+        } else if (getDuracao() <= 3) {
+            return 20;
+        } else {
+            return 20 + 15 * (Math.ceil(getDuracao()) - 3);
+        }
+    }
+
     public String getEstado() {
         return estado;
     }
@@ -114,6 +129,10 @@ public class Veiculo {
         return saida.toString();
     }
 
+    public int getVaga() {
+        return this.vaga;
+    }
+
     public void setEntrada(String entrada) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         this.entrada = LocalTime.parse(entrada, formatter);
@@ -124,12 +143,26 @@ public class Veiculo {
         this.saida = LocalTime.parse(saida, formatter);
     }
 
-    @Override
-    public String toString() {
-        return "Placa: " + this.placa + "\n" +
+    public void setVaga(int vaga) {
+        this.vaga = vaga;
+    }
+
+    public String infoEntrada() {
+        return  "\u001B[1m\u001B[34mInformações do veículo:\u001B[0m\n" +
+                "\u001B[34mPlaca: " + this.placa + "\n" +
                 "Estado: " + this.estado + "\n" +
+                "Vaga: " + getVaga() + "\n" +
+                "Entrada: " + getEntrada() + "\u001B[0m\n";
+    }
+
+    public String infoSaida() {
+        return  "\u001B[1m\u001B[34mInformações do veículo:\u001B[0m\n" +
+                "\u001B[34mPlaca: " + this.placa + "\n" +
+                "Estado: " + this.estado + "\n" +
+                "Vaga: " + getVaga() + "\n" +
                 "Entrada: " + getEntrada() + "\n" +
                 "Saída: " + getSaida() + "\n" +
-                "Duração: " + getDuracaoFormatada() + "\n";
+                "Duração: " + getDuracaoFormatada() + "\n" +
+                "Preço a pagar: R$" + valorPago() + "\u001B[0m";
     }
 }
