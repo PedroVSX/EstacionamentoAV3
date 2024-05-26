@@ -42,12 +42,13 @@ public class Main {
 
                 } else {
                     // Adicionar veículo
-                    System.out.println("\u001B[1m\u001B[32mVamos adicionar um veículo!\u001B[0m\n" +
-                            "\u001B[36mDigite as seguintes informações sobre o veículo: \u001B[0m");
+                    System.out.println("\u001B[1m\u001B[32mVamos adicionar um veículo!\u001B[0m\n");
+                    estacionamento.mostrarEstacionamento();
+                    System.out.println("\u001B[36mDigite as seguintes informações sobre o veículo: \u001B[0m\n");
 
                     // Cria o veículo
                     System.out.print("\u001B[36mPlaca: ");
-                    String placa = input.readLine();
+                    String placa = input.readLine().toUpperCase();
 
                     System.out.print("\u001B[36mHora de entrada: ");
                     String entrada = input.readLine();
@@ -75,13 +76,15 @@ public class Main {
 
             } else if (escolha == 2) {
 
-                if (estacionamento.checarSeEstaCheio()) {
-                    System.out.println("\u001B[1m\u001B[31mEstacionamento cheio!\u001B[0m\n");
+                if (estacionamento.checarSeEstaVazio()) {
+                    System.out.println("\u001B[1m\u001B[31mEstacionamento vazio!\u001B[0m\n");
 
                 } else {
                     // Remover veículo
-                    System.out.println("\u001B[1m\u001B[32mVamos remover um veículo!\u001B[0m\n" +
-                            "\u001B[36mDigite as seguintes informações sobre o veículo: \u001B[0m");
+                    System.out.println("\u001B[1m\u001B[32mVamos remover um veículo!\u001B[0m\n");
+                    estacionamento.mostrarEstacionamento();
+                    System.out.println("\u001B[36mDigite as seguintes informações sobre o veículo: \u001B[0m\n");
+
 
                     System.out.print("\u001B[36mVaga: ");
                     int vaga;
@@ -90,7 +93,7 @@ public class Main {
                     while (sucesso) {
                         try {
                             vaga = Integer.parseInt(input.readLine());
-                            estacionamento.checarSeEstaVazia(vaga); // Se estiver vazia dispara exceção.
+                            estacionamento.checarSeVagaEstaVazia(vaga); // Se estiver vazia dispara exceção.
 
                             System.out.print("\u001B[36mHora de saída: \u001B[0m");
                             String saida = input.readLine();
@@ -144,7 +147,7 @@ public class Main {
                 while (sucesso) {
                     try {
                         vaga = Integer.parseInt(input.readLine());
-                        estacionamento.checarSeEstaVazia(vaga); // Se estiver vazia dispara exceção.
+                        estacionamento.checarSeVagaEstaVazia(vaga); // Se estiver vazia dispara exceção.
 
                         estacionamento.buscarVeiculoPorVaga(vaga);
                     } catch (RuntimeException e) { // Tratamento de exceção

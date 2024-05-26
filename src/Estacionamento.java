@@ -98,7 +98,7 @@ public class Estacionamento {
         System.out.println(concatenador);
     }
 
-    public void checarSeEstaVazia(int vaga) {
+    public void checarSeVagaEstaVazia(int vaga) {
         int contador = 1;
         boolean parou = false;
 
@@ -132,5 +132,19 @@ public class Estacionamento {
         }
 
         return true;
+    }
+
+    public boolean checarSeEstaVazio() {
+        int vazio = 0;
+
+        for (int i = 0; i < vagas.length; i++) {
+            for (int j = 0; j < vagas[0].length; j++) {
+                if (vagas[i][j] == null) {
+                    vazio++;
+                }
+            }
+        }
+
+        return vazio == vagas.length + vagas[0].length;
     }
 }
